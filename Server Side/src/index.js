@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import connectDB from "./Database/DB.js";
 import app from "./app.js";
-
+import "../src/utils/nodecron.util.js";
 dotenv.config({
     path: "./.env"
 });

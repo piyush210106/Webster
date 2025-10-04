@@ -10,12 +10,12 @@ const addMedication = async (req, res) => {
         if(!userId || !pillName || !dosage || !time) return res.status(400).json({message: "All fields are required!!"});
 
         let newEntry = new Medication({
-            userId,
+            userId: req.userId,
             pillName,
             dosage,
             time
         });
-        await Medication.save();
+        await newEntry.save();
         return res.status(200).json({message: "Medication Added Successfully!!"});
     } catch (error) {
         return res.status(400).json({message: "Error in adding medication ",error});
@@ -32,7 +32,7 @@ const upcoming = async (req, res) => {
         const currentMin  = String(now.getMinutes()).padStart(2,"0");
         const currentTime = `${currentHour}:${currentMin}`;
 
-        const meds = await Medication.find({ userId: req.user.id });
+        const meds = await Medication.find({ userId: req.userId });
 
         let upcoming = [];
 

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-
+import authRouter from "../src/routes/auth.route.js"
+import medicationRouter from "../src/routes/medication.route.js"
 const app = express();
 
 app.use(cors({
@@ -10,4 +11,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use("/", authRouter);
+app.use("/user", medicationRouter);
 export default app;
+
