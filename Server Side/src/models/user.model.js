@@ -16,7 +16,12 @@ const userSchema = new mongoose.Schema({
         refreshToken: {
             type: String,
             required: false
-        }
+        },
+        google: {
+            google_accessToken: { type: String },
+            google_refreshToken: { type: String },
+            expiryDate: { type: Date }, 
+    },
     }, 
     {
         timestamps: true

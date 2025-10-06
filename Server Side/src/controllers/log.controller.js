@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Medication from "../models/medication.model.js";
 import Log from "../models/log.model.js";
+import { rescheduleMed } from "../utils/addToCalendar.utils.js";
 
 const addLog = async (req, res) => {
   try {
@@ -22,6 +23,7 @@ const addLog = async (req, res) => {
       status: status || "taken"
     });
 
+    if(status === "Missed") await rescheduleMed(user, med);
     await log.save();
     return res.status(201).json({ message: "Log saved", log });
   } catch (error) {

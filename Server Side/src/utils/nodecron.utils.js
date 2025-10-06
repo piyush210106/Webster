@@ -21,8 +21,7 @@ cron.schedule("* * * * *", async () => {
   const meds = await Medication.find().populate("userId");
 
   for (const med of meds) {
-    for (const t of med.time) {   
-      if (t === currentTime) {
+      if (med.time === currentTime) {
         const user = med.userId;
         if (user && user.email) {
           await transporter.sendMail({
@@ -35,6 +34,5 @@ cron.schedule("* * * * *", async () => {
           console.log(`Reminder sent to ${user.email} for ${med.pillName} at ${t}`);
         }
       }
-    }
   }
 });

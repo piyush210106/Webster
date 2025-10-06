@@ -25,7 +25,7 @@ const refreshTokens = async (req, res, next) => {
     if(!refresh_token) return res.status(401).json({message: "Refresh Token Missing"});
 
     let decoded = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
-    let user = await user.findById(decoded.id);
+    let user = await User.findById(decoded.id);
     if(!user || refresh_token !== user.refreshToken)
         return res.status(400).json({message: "Invalid Refresh Token"});
 

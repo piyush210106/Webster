@@ -1,16 +1,24 @@
 import passport from "passport";
-import User from "../models/user.model.js"
-import { Strategy as GoogleStrategy } from "passport-google-oauth20"
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+import User from "../models/user.model.js";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
 dotenv.config({
-    path:"./.env"
+    path: "./.env"
 });
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:8000/auth/google/callback"
+    callbackURL: "http://localhost:8000/auth/google/callback",
+    scope: [
+      "profile",
+      "email",
+      "https://www.googleapis.com/auth/calendar.events"
+    ],
+    accessType: "offline",
+    prompt: "consent"
 }, 
     async (accessToken, refreshToken, profile, next) => {
         try {
@@ -21,7 +29,12 @@ passport.use(new GoogleStrategy({
                 google_id: profile.id,
                 email: profile.emails[0].value,
                 name: profile.displayName,
-                profile_pic: profile.photos[0].value
+                profile_pic: profile.photos[0].value,
+                google: {
+                    accessToken,
+                    refreshToken,
+                    expiryDate: new Date(Date.now() + 3600 * 1000) 
+                }   
             });
           }
 
@@ -44,7 +57,11 @@ const generateTokens = (user) => {
 }
 
 const askConsent = (req, res, next) => {
-    passport.authenticate( "google", {scope: ["profile", "email"]})(req, res, next);
+    passport.authenticate( "google", {scope: [
+    "profile",
+    "email",
+    "https://www.googleapis.com/auth/calendar.events"
+    ]})(req, res, next);
     
 }
 

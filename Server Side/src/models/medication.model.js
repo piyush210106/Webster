@@ -13,7 +13,11 @@ const medicationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    time: []
+    time:{
+        type: String,
+        required: true,
+        trim: true
+    }
 }, {timestamps: true}
 );
 
