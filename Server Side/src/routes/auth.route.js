@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {askConsent, userLogin} from "../controllers/user.controller.js"
+import { askConsent, userLogin} from "../controllers/user.controller.js"
 
 const authRouter = Router();
 
